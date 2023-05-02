@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Box } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {
+  Navbar,
+  Feed,
+  VideoDetail,
+  ChannelDetail,
+  SearchFeed,
+} from "./components";
 
-function App() {
+const App = () => {
+  const [theme, setTheme] = useState(true);
+  const darkTheme = createTheme({
+    palette: {
+      mode: theme ? "dark" : "light",
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
+          <Box>
+            <Navbar theme={theme} setTheme={setTheme} />
+            <Routes>
+              <Route path="/" exact element={<Feed />} />
+              <Route path="/video/:id" element={<VideoDetail />} />
+              <Route path="/channel/:id" element={<ChannelDetail />} />
+              <Route path="/search/:searchTerm" element={<SearchFeed />} />
+            </Routes>
+          </Box>
+        </ThemeProvider>
+      </BrowserRouter>
+    </>
   );
-}
+};
 
 export default App;
